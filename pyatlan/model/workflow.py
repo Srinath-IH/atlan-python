@@ -92,7 +92,7 @@ class WorkflowSearchResultStatus(AtlanObject):
     resources_duration: Optional[Dict[str, int]] = Field(default=None)
     startedAt: Optional[str] = Field(default=None)
     stored_templates: Any = Field(default=None)
-    storedWorkflowTemplateSpec: Any = Field(default=None)
+    stored_workflow_template_spec: Any = Field(default=None)
     synchronization: Optional[Dict[str, Any]] = Field(default=None)
 
 
@@ -148,11 +148,39 @@ class ReRunRequest(AtlanObject):
 class WorkflowResponse(AtlanObject):
     metadata: WorkflowMetadata
     spec: WorkflowSpec
-    payload: Optional[List[Any]] = Field(default=None)
+    payload: Optional[List[Any]] = Field(default_factory=list)
 
 
 class WorkflowRunResponse(WorkflowResponse):
     status: WorkflowSearchResultStatus
+
+
+class WorkflowSchedule(AtlanObject):
+    timezone: str
+    cron_schedule: str
+
+
+class WorkflowScheduleSpec(AtlanObject):
+    schedule: Optional[str]
+    timezone: Optional[str]
+    workflow_spec: Optional[WorkflowSpec]
+    concurrency_policy: Optional[str]
+    starting_deadline_seconds: Optional[int]
+    successful_jobs_history_limit: Optional[int]
+    failed_jobs_history_limit: Optional[int]
+
+
+class WorkflowScheduleStatus(AtlanObject):
+    active: Optional[Any]
+    conditions: Optional[Any]
+    last_scheduled_time: Optional[str]
+
+
+class WorkflowScheduleResponse(AtlanObject):
+    metadata: Optional[WorkflowMetadata]
+    spec: Optional[WorkflowScheduleSpec]
+    status: Optional[WorkflowScheduleStatus]
+    workflow_metadata: Optional[WorkflowMetadata]
 
 
 class WorkflowSearchRequest(AtlanObject):
